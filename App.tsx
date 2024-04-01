@@ -1,8 +1,11 @@
-import { Loading } from '@components/Loading';
-import { useFonts,Poppins_400Regular,Poppins_700Bold } from '@expo-google-fonts/poppins'
+import { StatusBar } from 'react-native';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config" // Optional if you want to use default theme
-import { Text,StatusBar } from 'react-native';
+import { useFonts,Poppins_400Regular,Poppins_700Bold } from '@expo-google-fonts/poppins'
+
+import { Loading } from '@components/Loading';
+import { Routes } from '@routes/index';
+//import { ForgotPass } from '@screens/ForgotPass';
 
 
 export default function App() {
@@ -17,7 +20,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent      
       />
-      { fontsLoaded ? <Text>Font Loaded</Text> : <Loading/> }
+      { fontsLoaded ? <Routes/> : <Loading/> }
     </GluestackUIProvider>
   );
 }

@@ -27,9 +27,13 @@ export const gluestackUIConfig = createConfig({
   } as const,
   tokens: {
     colors: {
+      traderBg800:'#09090b',
       traderBg700:'#121214',
       traderBg600:'#202024',
       traderBg500:'#29292E',
+      traderBg400:'#27272a',
+      traderBg300:'#3f3f46',
+      traderLogin:'#171516',
       traderGreen500:'#00ff00',
       rose50: '#fff1f2',
       rose100: '#ffe4e6',
@@ -445,6 +449,7 @@ export const gluestackUIConfig = createConfig({
       '10': 40,
       '11': 44,
       '12': 48,
+      '14': 52,
       '16': 64,
       '20': 80,
       '24': 96,
@@ -542,8 +547,8 @@ export const gluestackUIConfig = createConfig({
     },
     fonts: {
       heading: 'Poppins_700Bold',
-      body: 'Poppins_400Bold',
-      mono: 'Poppins_400Bold',
+      body: 'Poppins_400Regular',
+      mono: 'Poppins_400Regular',
     },
     fontSizes: {
       '2xs': 10,

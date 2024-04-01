@@ -5,23 +5,17 @@ import Logo from '@assets/logo.png'
 import { InputLogin } from "@components/Input"
 import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
-import { AuthNavigatorRouterProps } from "@routes/auth.routes"
-import { useState } from "react"
-export const SignIn = () => {
-  const [ username, setUsername ] = useState('')
-  const [ password, setPassword ] = useState('')
+export const ForgotPass = () => {
 
-  const handleSigIn = () => {}
-  const navigation = useNavigation<AuthNavigatorRouterProps>()
-
-  const handleForgotPass = () => {
-    navigation.navigate("forgotPass")
+  const navigation = useNavigation()
+  const handleGoBack = () => {
+    navigation.goBack()
   }
+
   return(
     <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
       <VStack
-        flex={1}
-        
+        flex={1}        
         bg="$traderLogin">
 
         <ImageBackground
@@ -44,31 +38,26 @@ export const SignIn = () => {
           
           <Center px="$10">
             <Heading color="$white" fontSize="$xl" mb="$6">
-              Faça seu Login
+              Recuperar Senha
             </Heading>
 
             <InputLogin 
               placeholder="E-mail de Cadastro" 
               keyboardType="email-address"
-              onChangeText={setUsername}
               autoCapitalize="none"/>
             
-            <InputLogin 
-              placeholder="Senha"
-              onChangeText={setPassword}
-              secureTextEntry />
+            <Text color="$white" fontSize="$sm" textAlign="center" my="$2">
+              Um e-mail com instruções para recuperar seu acesso será enviado. Confira sua caixa de entrada e caixa de spam.
+            </Text>
 
-            <Button title="Entrar Agora" onPress={handleSigIn}/>
+            <Button title="Recuperar Senha"/>
           </Center> 
 
           <Center mt="$24" px="$10">
-            <Text color="$white" fontSize="$sm">
-              Esqueceu sua Senha?
-            </Text>
             <Button 
-              title="Recuperar Senha" 
+              title="Entrar" 
               variant="outline"               
-              onPress={handleForgotPass}/>
+              onPress={handleGoBack}/>
           </Center>
         
         </ImageBackground>
