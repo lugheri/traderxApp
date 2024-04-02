@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView } from "@gluestack-ui/themed"
 
 import BackgroundImg from '@assets/backgroundSignIn.png'
@@ -6,7 +7,7 @@ import { InputLogin } from "@components/Input"
 import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
 import { AuthNavigatorRouterProps } from "@routes/auth.routes"
-import { useState } from "react"
+
 export const SignIn = () => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')

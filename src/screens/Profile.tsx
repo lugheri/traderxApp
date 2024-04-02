@@ -1,5 +1,7 @@
-import { useState } from "react"
-import { ScrollView, Center, VStack, Text, Heading, Button } from "@gluestack-ui/themed"
+import { useState } from "react";
+import { ScrollView, Center, VStack, Text, Heading, Button, useToast, Toast, ToastDescription, ToastTitle } from "@gluestack-ui/themed";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { ScreenHeader } from "@components/ScreenHeader"
 import { UserPhoto } from "@components/UserPhoto"
@@ -14,9 +16,53 @@ export const Profile = () => {
   const MARGIN = 20
 
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [userPhoto, setUserPhoto ] = useState('https://github.com/lugheri.png')
+  const toast = useToast()
 
   const [name, setName ] = useState('Glauco Lugheri')
   const [email] = useState('lugheri@live.com')
+
+  const handleUserPhotoSelect = async () => {
+    setPhotoIsLoading(true)
+    try{
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality:1,
+        aspect:[4,4],
+        allowsEditing: true,
+      })
+  
+      if(photoSelected.canceled){
+        return
+      }  
+      if(photoSelected.assets[0].uri){
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri) as any     
+        if(photoInfo.size && photoInfo.size / 1024 /1024 > 5){
+          return toast.show({
+            placement:'bottom',
+            render: ({id}) => {
+              const toastId = "toast-" + id
+              return (
+                <Toast nativeID={toastId} action="error" variant="accent">
+                  <VStack space="xs">
+                  <ToastTitle color="$red500">Erro !</ToastTitle>
+                  <ToastDescription>Essa imagem é muito grande. Escolha uma de até 5MB</ToastDescription>
+                  </VStack>
+                </Toast>
+              )
+            }            
+          })
+          return
+        }
+        setUserPhoto(photoSelected.assets[0].uri)
+      }
+
+    }catch(err){
+      console.log(err)
+    } finally{
+      setPhotoIsLoading(false)
+    }   
+  }
 
   return(
     <VStack flex={1}>
@@ -34,12 +80,12 @@ export const Profile = () => {
             </ContentLoader>
             :
             <UserPhoto
-              source={{uri:'https://github.com/lugheri.png'}}
+              source={{uri:userPhoto}}
               alt="User Photo"
               size={PHOTO_SIZE}
             />
           }
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleUserPhotoSelect}>
             <Text 
               color="$traderGreen500" 
               fontWeight="$bold" 
