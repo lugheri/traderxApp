@@ -3,16 +3,20 @@ import { UserPhoto } from "./UserPhoto"
 import { TouchableOpacity } from "react-native"
 
 import ExitSvg from '@assets/exit.svg'
+import { useAuth } from "@hooks/useAuth"
+import defaultUserPhotoImg from '@assets/userPhotoDefault.png'
 export const HomeHeader = () => {
   const theme = useStyled()
   const sizes = theme.config.tokens.space
   const colors = theme.config.tokens.colors
   const iconSize = sizes[5]
+  const { user, signOut } = useAuth()
 
+  
   return(
     <HStack bg="$traderBg500" pt="$16" pb="$5" px="$8" alignItems="center">
       <UserPhoto
-        source={{uri:'https://github.com/lugheri.png'}}
+        source={user.avatar ? {uri:user.avatar} : defaultUserPhotoImg }
         alt="User Photo"
         size={64}
         
@@ -22,11 +26,11 @@ export const HomeHeader = () => {
           Olá,
         </Text>
         <Heading color="$coolGray100" fontSize="$xl" my="$0">
-          Glauco
+          {user.name}
         </Heading>
       </VStack>   
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={signOut}>
         <ExitSvg fill={colors.coolGray300} width={iconSize} height={iconSize}/> 
       </TouchableOpacity>
 

@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView } from "@gluestack-ui/themed"
+import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView, useToast, Toast, ToastDescription } from "@gluestack-ui/themed"
 
 import BackgroundImg from '@assets/backgroundSignIn.png'
 import Logo from '@assets/logo.png'
@@ -7,24 +6,69 @@ import { InputLogin } from "@components/Input"
 import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
 import { AuthNavigatorRouterProps } from "@routes/auth.routes"
+import { useForm, Controller } from "react-hook-form"
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { useAuth } from "@hooks/useAuth"
+import { AppError } from "@utils/AppError"
+import { useState } from "react"
 
-export const SignIn = () => {
-  const [ username, setUsername ] = useState('')
-  const [ password, setPassword ] = useState('')
+type FormDataProps = {
+  email:string,
+  password:string
+}
 
-  const handleSigIn = () => {}
+const signUpSchema = yup.object({
+  email:yup.string().required('Informe o email.').email('E-mail inválido.'),
+  password:yup.string().required('Informe a senha.').min(6,'A senha informada é muito curta.')
+})
+
+export const SignIn = () => {  
+  const toast = useToast()
+  const { control, handleSubmit, formState:{errors} } = useForm<FormDataProps>({
+    resolver: yupResolver(signUpSchema),
+    defaultValues:{
+      email:"",
+      password:""
+    }
+  })
+
+  const { signIn } = useAuth()
+  const [ isLoading, setIsLoading] = useState(false)
+
+  const handleSigIn = async ({email,password}: FormDataProps) => {
+    try{
+      setIsLoading(true)
+      await signIn(email,password)
+    }catch(error){
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possivel entrar. Tente novamente mais tarde'
+      setIsLoading(false)
+      toast.show({
+        placement:'top',
+        render: ({id}) => {
+          const toastId = "signIn-" + id
+          return (
+            <Toast nativeID={toastId} action="error" variant="accent" mt="$10"  bgColor="$red600">
+              <VStack space="sm">
+              <ToastDescription color="$white">{title}</ToastDescription>
+              </VStack>
+            </Toast>
+          )
+        }            
+      })
+    }
+  }
+
   const navigation = useNavigation<AuthNavigatorRouterProps>()
-
-  const handleForgotPass = () => {
+  const handleForgotPass = () => {   
     navigation.navigate("forgotPass")
   }
   return(
     <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
       <VStack
-        flex={1}
-        
+        flex={1}        
         bg="$traderLogin">
-
         <ImageBackground
           source={BackgroundImg}
           defaultSource={BackgroundImg}
@@ -48,18 +92,40 @@ export const SignIn = () => {
               Faça seu Login
             </Heading>
 
-            <InputLogin 
-              placeholder="E-mail de Cadastro" 
-              keyboardType="email-address"
-              onChangeText={setUsername}
-              autoCapitalize="none"/>
-            
-            <InputLogin 
-              placeholder="Senha"
-              onChangeText={setPassword}
-              secureTextEntry />
+            <Controller 
+              control={control}
+              name="email"              
+              render={({field:{onChange, value}})=>(
+                <InputLogin 
+                  placeholder="E-mail de Cadastro" 
+                  keyboardType="email-address"
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  errorMessage={errors.email?.message}/>
+              )}
+            />
+          
 
-            <Button title="Entrar Agora" onPress={handleSigIn}/>
+            <Controller 
+              control={control}
+              name="password"             
+              render={({field:{onChange, value}})=>(
+                <InputLogin 
+                  placeholder="Senha" 
+                  secureTextEntry
+                  onChangeText={onChange}
+                  value={value}                  
+                  onSubmitEditing={handleSubmit(handleSigIn)}
+                  returnKeyType="send"
+                  errorMessage={errors.password?.message}/>
+              )}
+            />
+
+            <Button 
+              title="Entrar Agora"  
+              isLoading={isLoading} 
+              onPress={handleSubmit(handleSigIn)}/>
           </Center> 
 
           <Center mt="$24" px="$10">
@@ -69,7 +135,8 @@ export const SignIn = () => {
             <Button 
               title="Recuperar Senha" 
               variant="outline"               
-              onPress={handleForgotPass}/>
+              onPress={handleForgotPass}
+             />
           </Center>
         
         </ImageBackground>

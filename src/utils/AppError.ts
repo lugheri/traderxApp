@@ -1,3 +1,7 @@
 export class AppError{
-  constructor(private message:string){}
+  message:string
+
+  constructor(message:string){
+    this.message = message
+  }
 }

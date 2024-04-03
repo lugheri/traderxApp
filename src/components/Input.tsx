@@ -1,26 +1,36 @@
-import { Input as GlueStackInput, InputField } from "@gluestack-ui/themed"
+import { AlertCircleIcon, FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, Input as GlueStackInput, InputField } from "@gluestack-ui/themed"
 import { TextInputProps } from "react-native"
 
-export const InputLogin = ({...rest}:TextInputProps) => {
-
+type InputLoginProps = TextInputProps & {
+  errorMessage?:string|null
+  isInvalid?:boolean
+}
+export const InputLogin = ({errorMessage = null,isInvalid = false, ...rest}:InputLoginProps) => {
+  const invalid = !!errorMessage || isInvalid
   return(
-    <GlueStackInput
-     
-      h="$14"
-     
-      borderWidth="$0"
-      mb="$5"      
-    >
+    <FormControl w="$full" mb="$5" isInvalid={invalid}>
+      <GlueStackInput  h="$14" borderWidth="$0"  isInvalid={invalid}>
       <InputField 
         px="$4"
         bg="$traderBg800"
         color="$white"  
         fontSize="$sm"
         fontFamily="$body"
+        $invalid-borderColor="$red500"
+        $invalid-borderWidth={1}
         $focus-borderColor="$green800"
-        $focus-borderWidth={2}       
+        $focus-borderWidth={2}             
         {...rest}/>
-    </GlueStackInput>
+      </GlueStackInput> 
+      { errorMessage && 
+        <FormControlError>
+          <FormControlErrorIcon as={AlertCircleIcon} />
+          <FormControlErrorText>
+            {errorMessage}
+          </FormControlErrorText>
+        </FormControlError>
+      }
+    </FormControl>
   )
 }
 
