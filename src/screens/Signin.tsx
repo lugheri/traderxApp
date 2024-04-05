@@ -1,4 +1,4 @@
-import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView, useToast, Toast, ToastDescription } from "@gluestack-ui/themed"
+import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView } from "@gluestack-ui/themed"
 
 import BackgroundImg from '@assets/backgroundSignIn.png'
 import Logo from '@assets/logo.png'
@@ -10,8 +10,8 @@ import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useAuth } from "@hooks/useAuth"
-import { AppError } from "@utils/AppError"
 import { useState } from "react"
+import useErrorHandling from "@hooks/useErrorHandling"
 
 type FormDataProps = {
   email:string,
@@ -24,7 +24,7 @@ const signUpSchema = yup.object({
 })
 
 export const SignIn = () => {  
-  const toast = useToast()
+  const { handleErrors } = useErrorHandling();
   const { control, handleSubmit, formState:{errors} } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema),
     defaultValues:{
@@ -41,22 +41,7 @@ export const SignIn = () => {
       setIsLoading(true)
       await signIn(email,password)
     }catch(error){
-      const isAppError = error instanceof AppError
-      const title = isAppError ? error.message : 'Não foi possivel entrar. Tente novamente mais tarde'
-      setIsLoading(false)
-      toast.show({
-        placement:'top',
-        render: ({id}) => {
-          const toastId = "signIn-" + id
-          return (
-            <Toast nativeID={toastId} action="error" variant="accent" mt="$10"  bgColor="$red600">
-              <VStack space="sm">
-              <ToastDescription color="$white">{title}</ToastDescription>
-              </VStack>
-            </Toast>
-          )
-        }            
-      })
+      handleErrors(error as Error);
     }
   }
 

@@ -15,6 +15,7 @@
     "@gluestack-ui/config": "^1.1.17",
     "@gluestack-ui/themed": "^1.1.12",
     "@hookform/resolvers": "^3.3.4",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
@@ -35,7 +36,7 @@
     "styled-components": "^6.1.8",
     "typescript": "^5.3.0",
     "yup": "^1.4.0",
-    "@react-native-async-storage/async-storage": "1.21.0"
+    "react-native-webview": "13.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
