@@ -41,8 +41,8 @@ export const AuthContextProvider = ({children}:AuthContextProviderProps) => {
     try{
       const { data } = await api.post('/loginStudent',{username:email,password})
       if(data.success){
-        const  { id, name, mail, photo } = data.userdata
-        await storageUserAndToken({ id,name,email:mail,avatar:`${ImageUrl}${photo}`},data.token)        
+        const  { id, name, mail, photo, community } = data.userdata
+        await storageUserAndToken({ id,name,email:mail,avatar:`${ImageUrl}${photo}`,community},data.token)        
       }      
     }catch(error){
       throw error
