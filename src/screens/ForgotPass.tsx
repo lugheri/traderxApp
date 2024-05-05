@@ -1,12 +1,13 @@
 import { ImageBackground,Center, VStack, Text, Image, Heading, ScrollView } from "@gluestack-ui/themed"
 
-import BackgroundImg from '@assets/backgroundSignIn.png'
-import Logo from '@assets/logo.png'
 import { InputLogin } from "@components/Input"
 import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
-export const ForgotPass = () => {
 
+import Logo from '@assets/logo.png'
+import BackgroundImg from '@assets/backgroundSignIn.png'
+
+export const ForgotPass = () => {
   const navigation = useNavigation()
   const handleGoBack = () => {
     navigation.goBack()

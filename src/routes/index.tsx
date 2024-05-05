@@ -3,7 +3,6 @@ import { Box, useStyled } from "@gluestack-ui/themed";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
-import { ThemeStyles } from "@gluestack-style/react/lib/typescript/types";
 import { useAuth } from "@hooks/useAuth";
 import { Loading } from "@components/Loading";
 

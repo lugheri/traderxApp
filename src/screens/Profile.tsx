@@ -9,17 +9,21 @@ import ContentLoader,{ Circle }  from "react-content-loader/native"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import { Input } from "@components/Input"
 import { ButtonText } from "@gluestack-ui/themed"
+import { useAuth } from "@hooks/useAuth"
+
+import defaultUserPhotoImg from '@assets/userPhotoDefault.png'
 
 export const Profile = () => {
   const { width } = useWindowDimensions()
+  const { user } = useAuth()
   const PHOTO_SIZE = 128
   const MARGIN = 20
 
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto ] = useState('https://github.com/lugheri.png')
+  const [userPhoto, setUserPhoto ] = useState<{uri:string}|string>(user.avatar ? defaultUserPhotoImg : {uri:user.avatar} )
   const toast = useToast()
 
-  const [name, setName ] = useState('Glauco Lugheri')
+  const [name, setName ] = useState(user.name)
   const [email] = useState('lugheri@live.com')
 
   const handleUserPhotoSelect = async () => {
@@ -54,7 +58,7 @@ export const Profile = () => {
           })
           return
         }
-        setUserPhoto(photoSelected.assets[0].uri)
+        setUserPhoto({uri:photoSelected.assets[0].uri})
       }
 
     }catch(err){
@@ -80,7 +84,7 @@ export const Profile = () => {
             </ContentLoader>
             :
             <UserPhoto
-              source={{uri:userPhoto}}
+              source={userPhoto}
               alt="User Photo"
               size={PHOTO_SIZE}
             />
@@ -103,7 +107,7 @@ export const Profile = () => {
           />
           <Input 
             placeholder="E-mail"
-            value={email}
+            value={user.email}
             isDisabled
           />
         </Center>

@@ -1,8 +1,8 @@
 import { HStack, VStack, Heading, Text, useStyled } from "@gluestack-ui/themed"
-import { UserPhoto } from "./UserPhoto"
+import { UserPhoto } from "../../../components/UserPhoto"
 import { TouchableOpacity } from "react-native"
 
-import ExitSvg from '@assets/exit.svg'
+import ExitSvg from '@assets/icons/exit.svg'
 import { useAuth } from "@hooks/useAuth"
 import defaultUserPhotoImg from '@assets/userPhotoDefault.png'
 

@@ -6,8 +6,6 @@ import { useFonts,Poppins_400Regular,Poppins_700Bold } from '@expo-google-fonts/
 import { Loading } from '@components/Loading';
 import { Routes } from '@routes/index';
 import { AuthContextProvider } from '@contexts/AuthContext';
-//import { ForgotPass } from '@screens/ForgotPass';
-
 
 export default function App() {
   const [ fontsLoaded ] = useFonts({
@@ -27,3 +25,4 @@ export default function App() {
     </GluestackUIProvider>
   );
 }
+

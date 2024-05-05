@@ -27,6 +27,8 @@ export const gluestackUIConfig = createConfig({
   } as const,
   tokens: {
     colors: {
+      traderSecondaryGray:"#29292E",
+      traderPrimaryGray:"#0f0f0f",
       traderBg800:'#09090b',
       traderBg700:'#121214',
       traderBg600:'#202024',
@@ -455,6 +457,7 @@ export const gluestackUIConfig = createConfig({
       '24': 96,
       '32': 128,
       '40': 160,
+      '44': 175,
       '48': 192,
       '56': 224,
       '64': 256,

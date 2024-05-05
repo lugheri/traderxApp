@@ -1,9 +1,10 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { UserDTO } from "@dtos/userDTO";
 import { api } from "@services/api";
 import { storageUserSave, storageUserGet, storageUserRemove } from "src/storage/storageUser";
-import { ImageUrl } from "@utils/BaseUrl";
+import { BaseUrl } from "@utils/BaseUrl";
 import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from "@storage/storageAuthToken";
+import { UserDTO } from "@dtos/UserDTO";
+
 
 export type AuthContextDataProps = {
   user:UserDTO;
@@ -38,6 +39,7 @@ export const AuthContextProvider = ({children}:AuthContextProviderProps) => {
   }
 
   const signIn = async (email:string,password:string) => {
+    const ImageUrl = BaseUrl+'/gallery/'
     try{
       const { data } = await api.post('/loginStudent',{username:email,password})
       if(data.success){
